@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Busca de Combustiveis - EDA2 2026.1</title>
+  <link rel="stylesheet" href="/estilo.css" />
+</head>
+<body>
+
+  <header>
+    <div class="header-inner">
+      <div class="header-title">
+        <span class="icon">&#9981;</span>
+        <div>
+          <h1>Busca de Pre&ccedil;os de Combust&iacute;veis</h1>
+          <p class="subtitle">Dataset ANP &mdash; Fevereiro 2026 &bull; EDA2 Grupo 07</p>
+        </div>
+      </div>
+      <div class="header-team">
+        <span id="aluno1"></span>
+        <span id="aluno2"></span>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="filtros-card">
+      <h2>Filtros de Busca</h2>
+
+      <div class="filtros-grid">
+
+        <div class="campo-grupo">
+          <label for="sel-estado">Estado</label>
+          <select id="sel-estado">
+            <option value="">Todos os estados</option>
+          </select>
+        </div>
+
+        <div class="campo-grupo">
+          <label for="inp-municipio">Munic&iacute;pio <span class="hint">(prefixo)</span></label>
+          <input type="text" id="inp-municipio" placeholder="Ex: SAO PAULO"
+                 autocomplete="off" />
+          <ul id="sugestoes" class="sugestoes" hidden></ul>
+        </div>
+
+        <div class="campo-grupo">
+          <label for="sel-produto">Produto</label>
+          <select id="sel-produto">
+            <option value="">Todos</option>
+            <option value="GASOLINA">Gasolina</option>
+            <option value="GASOLINA ADITIVADA">Gasolina Aditivada</option>
+            <option value="ETANOL">Etanol</option>
+          </select>
+        </div>
+
+        <div class="campo-grupo">
+          <label for="sel-bandeira">Bandeira</label>
+          <select id="sel-bandeira">
+            <option value="">Todas</option>
+          </select>
+        </div>
+
+        <div class="campo-grupo">
+          <label for="inp-data-inicio">Data inicial</label>
+          <input type="date" id="inp-data-inicio" />
+        </div>
+
+        <div class="campo-grupo">
+          <label for="inp-data-fim">Data final</label>
+          <input type="date" id="inp-data-fim" />
+        </div>
+
+      </div>
+
+      <div class="filtros-acoes">
+        <button id="btn-buscar" class="btn-primary">&#128269; Buscar</button>
+        <button id="btn-limpar" class="btn-secondary">&#10006; Limpar</button>
+      </div>
+    </section>
+
+    <section id="stats" class="stats-bar" hidden>
+      <div class="stat-item">
+        <span class="stat-label">Resultados encontrados</span>
+        <span class="stat-value" id="st-total">—</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-label">Exibindo</span>
+        <span class="stat-value" id="st-exibindo">—</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-label">Pre&ccedil;o M&iacute;nimo</span>
+        <span class="stat-value" id="st-min">—</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-label">Pre&ccedil;o M&eacute;dio</span>
+        <span class="stat-value" id="st-med">—</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-label">Pre&ccedil;o M&aacute;ximo</span>
+        <span class="stat-value" id="st-max">—</span>
+      </div>
+    </section>
+
+    <div id="spinner" class="spinner" hidden>
+      <div class="spinner-ring"></div>
+      <span>Buscando...</span>
+    </div>
+    <div id="msg-vazio" class="msg-vazio" hidden>
+      Nenhum resultado encontrado para os filtros selecionados.
+    </div>
+
+    <section id="tabela-wrapper" hidden>
+      <div class="tabela-scroll">
+        <table id="tabela-resultados">
+          <thead>
+            <tr>
+              <th>Estado</th>
+              <th>Munic&iacute;pio</th>
+              <th>Produto</th>
+              <th>Pre&ccedil;o (R$/L)</th>
+              <th>Bandeira</th>
+              <th>Revenda</th>
+              <th>Bairro</th>
+              <th>Data</th>
+            </tr>
+          </thead>
+          <tbody id="tabela-corpo"></tbody>
+        </table>
+      </div>
+      <p id="aviso-limite" class="aviso-limite" hidden>
+        &#9888; Mostrando apenas os primeiros 500 resultados. Use filtros para refinar a busca.
+      </p>
+    </section>
+
+  </main>
+
+  <footer>
+    <p>EDA2 &mdash; Estrutura de Dados 2 &bull; UnB 2026/1 &bull; Grupo 07</p>
+    <p class="footer-algo">
+      Algoritmos: <strong>Tabela Hash</strong> (lookup por estado O(1)) &bull;
+      <strong>Quicksort</strong> (ordena&ccedil;&atilde;o por munic&iacute;pio O(n log n)) &bull;
+      <strong>Busca Bin&aacute;ria por Prefixo</strong> (O(log n))
+    </p>
+  </footer>
+
+  <script src="/app.js"></script>
+</body>
+</html>
