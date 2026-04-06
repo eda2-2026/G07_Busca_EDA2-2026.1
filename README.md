@@ -13,6 +13,9 @@ Em vez de utilizar uma busca linear simples, o sistema carrega os dados em memó
 
 A aplicação C também conta com pequeno e veloz servidor backend próprio via Sockets (ouvindo a porta HTTP). Ele se comunica através de rotas `/api/...` em formato JSON diretamente com um Frontend web interativo desenvolvido junto e desenhado com HTML/CSS/Vanilla JS integrado, que torna a demonstração visual, performática, amigável para o usuário final, e com belos relatórios rápidos das estatísticas do preço no cenário.
 
+## Vídeo explicativo
+https://youtu.be/k-r2QzfD7EE
+
 ## Screenshots
 
 
