@@ -16,7 +16,7 @@ A aplicação C também conta com pequeno e veloz servidor backend próprio via 
 ## Screenshots
 
 
-![Tela inicial da Aplicação](./screenshots/screenshot1.png)
+![Tela inicial da Aplicação](./screenshots/image.png)
 
 ![Menu de filtros / Sugerindo Cidades](./screenshots/screenshot2.png)
 
