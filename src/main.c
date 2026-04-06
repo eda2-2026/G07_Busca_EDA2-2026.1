@@ -4,6 +4,7 @@
 #include "tabela_hash.h"
 #include "busca.h"
 #include "servidor.h"
+#include "busca_interpolacao.h"
 
 #define ALUNO1_NOME      "VICTOR LEANDRO ROCHA DE ASSIS"
 #define ALUNO1_MATRICULA "222021826"
@@ -53,9 +54,19 @@ int main(int quantidade_argumentos, char *argumentos[]) {
     printf("[main] Ordenando municipios (Quicksort)...\n");
     ordenar_buckets(tabela);
 
-    printf("[main] Pronto. Acesse: http://localhost:%d\n\n", porta);
-    iniciar_servidor(tabela, porta);
+    printf("[main] Construindo indice por data (interpolacao)...\n");
+    IndicePorData *indice_data = indice_por_data_criar(registros, total);
+    if (!indice_data) {
+        fprintf(stderr, "[main] Falha ao criar indice por data.\n");
+        liberar_tabela_hash(tabela);
+        free(registros);
+        return 1;
+    }
 
+    printf("[main] Pronto. Acesse: http://localhost:%d\n\n", porta);
+    iniciar_servidor(tabela, registros, total, indice_data, porta);
+
+    indice_por_data_liberar(indice_data);
     liberar_tabela_hash(tabela);
     free(registros);
     return 0;

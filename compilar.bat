@@ -8,7 +8,8 @@ where gcc >nul 2>&1
 if %ERRORLEVEL% == 0 (
     echo Usando: gcc
     gcc -Wall -O2 -std=c99 -o busca_combustivel.exe ^
-        src\main.c src\csv.c src\tabela_hash.c src\busca.c src\servidor.c ^
+        src\main.c src\csv.c src\tabela_hash.c src\busca.c ^
+        src\busca_sequencial.c src\busca_interpolacao.c src\servidor.c ^
         -lws2_32
     goto :fim
 )
@@ -18,7 +19,8 @@ set WINLIBS="%LOCALAPPDATA%\Microsoft\WinGet\Packages\BrechtSanders.WinLibs.POSI
 if exist %WINLIBS% (
     echo Usando: WinLibs gcc
     %WINLIBS% -Wall -O2 -std=c99 -o busca_combustivel.exe ^
-        src\main.c src\csv.c src\tabela_hash.c src\busca.c src\servidor.c ^
+        src\main.c src\csv.c src\tabela_hash.c src\busca.c ^
+        src\busca_sequencial.c src\busca_interpolacao.c src\servidor.c ^
         -lws2_32
     goto :fim
 )

@@ -5,6 +5,8 @@ SRCS    = $(SRCDIR)/main.c \
           $(SRCDIR)/csv.c \
           $(SRCDIR)/tabela_hash.c \
           $(SRCDIR)/busca.c \
+          $(SRCDIR)/busca_sequencial.c \
+          $(SRCDIR)/busca_interpolacao.c \
           $(SRCDIR)/servidor.c
 
 # ---------------------------------------------------------------

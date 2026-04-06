@@ -27,7 +27,13 @@ static void copia_safe(char *dst, const char *src, int max) {
 
 #include "servidor.h"
 #include "busca.h"
+#include "busca_sequencial.h"
 #include "tipos.h"
+
+static TabelaHash   *g_tabela;
+static Registro     *g_registros;
+static int           g_total_registros;
+static IndicePorData *g_indice_data;
 
 /* Diretorio dos arquivos do frontend (relativo ao CWD ao executar) */
 #define FRONTEND_DIR "frontend/"
@@ -340,13 +346,48 @@ static void handle_busca(SOCKET cliente, TabelaHash *tabela, const char *qs) {
     para_maiusculas(bandeira);
     /* datas permanecem em minusculas: "2026-02-01" */
 
-    ResultadoBusca res = buscar(tabela,
-                                estado[0]       ? estado       : NULL,
-                                municipio[0]    ? municipio    : NULL,
-                                produto[0]      ? produto      : NULL,
-                                bandeira[0]     ? bandeira     : NULL,
-                                data_inicio[0]  ? data_inicio  : NULL,
-                                data_fim[0]     ? data_fim     : NULL);
+    char metodo[24] = "hash";
+    get_param(qs, "metodo", metodo, sizeof(metodo));
+    for (int mi = 0; metodo[mi]; mi++) {
+        char c = metodo[mi];
+        if (c >= 'A' && c <= 'Z') metodo[mi] = (char)(c + 32);
+    }
+
+    const char *metodo_json = "hash";
+    ResultadoBusca res;
+    res.count     = 0;
+    res.total     = 0;
+    res.registros = NULL;
+
+    if (strcmp(metodo, "sequencial") == 0) {
+        metodo_json = "sequencial";
+        res = buscar_sequencial(g_registros,
+                                g_total_registros,
+                                estado[0] ? estado : NULL,
+                                municipio[0] ? municipio : NULL,
+                                produto[0] ? produto : NULL,
+                                bandeira[0] ? bandeira : NULL,
+                                data_inicio[0] ? data_inicio : NULL,
+                                data_fim[0] ? data_fim : NULL);
+    } else if (strcmp(metodo, "interpolacao") == 0) {
+        metodo_json = "interpolacao";
+        if (g_indice_data)
+            res = buscar_interpolacao(g_indice_data,
+                                      estado[0] ? estado : NULL,
+                                      municipio[0] ? municipio : NULL,
+                                      produto[0] ? produto : NULL,
+                                      bandeira[0] ? bandeira : NULL,
+                                      data_inicio[0] ? data_inicio : NULL,
+                                      data_fim[0] ? data_fim : NULL);
+    } else {
+        res = buscar(tabela,
+                     estado[0] ? estado : NULL,
+                     municipio[0] ? municipio : NULL,
+                     produto[0] ? produto : NULL,
+                     bandeira[0] ? bandeira : NULL,
+                     data_inicio[0] ? data_inicio : NULL,
+                     data_fim[0] ? data_fim : NULL);
+    }
 
     char *buf = (char *)malloc(BUF_RESP);
     if (!buf) {
@@ -388,6 +429,9 @@ static void handle_busca(SOCKET cliente, TabelaHash *tabela, const char *qs) {
 #define APPEND(fmt, ...) pos += snprintf(buf + pos, BUF_RESP - pos, fmt, ##__VA_ARGS__)
 
     APPEND("{");
+    APPEND("\"metodo\":");
+    pos += json_escreve_str(buf, pos, BUF_RESP, metodo_json);
+    APPEND(",");
     APPEND("\"total\":%d,", res.total);
     APPEND("\"retornados\":%d,", res.count);
     if (com_preco > 0) {
@@ -428,7 +472,16 @@ static void handle_busca(SOCKET cliente, TabelaHash *tabela, const char *qs) {
 /*  Loop principal do servidor                                          */
 /* ------------------------------------------------------------------ */
 
-void iniciar_servidor(TabelaHash *tabela, int porta) {
+void iniciar_servidor(TabelaHash *tabela,
+                      Registro *registros,
+                      int total_registros,
+                      IndicePorData *indice_data,
+                      int porta) {
+    g_tabela          = tabela;
+    g_registros       = registros;
+    g_total_registros = total_registros;
+    g_indice_data     = indice_data;
+
     INIT_SOCKETS();
 
     SOCKET srv = socket(AF_INET, SOCK_STREAM, 0);

@@ -71,6 +71,16 @@
           <input type="date" id="inp-data-fim" />
         </div>
 
+        <div class="campo-grupo campo-metodo">
+          <label for="sel-metodo">M&eacute;todo de busca</label>
+          <select id="sel-metodo">
+            <option value="hash">Hash + bin&aacute;ria por munic&iacute;pio (padr&atilde;o)</option>
+            <option value="sequencial">Busca sequencial no vetor completo</option>
+            <option value="interpolacao">Interpola&ccedil;&atilde;o por intervalo de data</option>
+          </select>
+          <p class="hint-metodo">Interpola&ccedil;&atilde;o: informe data inicial e/ou final para restringir o eixo temporal com mais efici&ecirc;ncia.</p>
+        </div>
+
       </div>
 
       <div class="filtros-acoes">
@@ -87,6 +97,10 @@
       <div class="stat-item">
         <span class="stat-label">Exibindo</span>
         <span class="stat-value" id="st-exibindo">—</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-label">M&eacute;todo aplicado</span>
+        <span class="stat-value stat-metodo" id="st-metodo">—</span>
       </div>
       <div class="stat-item">
         <span class="stat-label">Pre&ccedil;o M&iacute;nimo</span>
@@ -138,9 +152,11 @@
   <footer>
     <p>EDA2 &mdash; Estrutura de Dados 2 &bull; UnB 2026/1 &bull; Grupo 07</p>
     <p class="footer-algo">
-      Algoritmos: <strong>Tabela Hash</strong> (lookup por estado O(1)) &bull;
-      <strong>Quicksort</strong> (ordena&ccedil;&atilde;o por munic&iacute;pio O(n log n)) &bull;
-      <strong>Busca Bin&aacute;ria por Prefixo</strong> (O(log n))
+      Algoritmos: <strong>Tabela Hash</strong> (estado O(1)) &bull;
+      <strong>Quicksort</strong> (munic&iacute;pio O(n log n)) &bull;
+      <strong>Busca bin&aacute;ria por prefixo</strong> (O(log n)) &bull;
+      <strong>Busca sequencial</strong> (O(n)) &bull;
+      <strong>Mergesort + interpola&ccedil;&atilde;o</strong> (data O(n log n) + O(log log n) m&eacute;dio no intervalo)
     </p>
   </footer>
 

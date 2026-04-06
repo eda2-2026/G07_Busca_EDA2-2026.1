@@ -37,15 +37,6 @@ void quicksort_municipio(Registro **arr, int low, int high);
 int busca_binaria_prefixo(Registro **arr, int n, const char *prefixo);
 
 /*
- * ResultadoBusca - resultado de uma consulta
- */
-typedef struct {
-    Registro **registros;   /* array de ponteiros para os registros encontrados */
-    int        count;       /* quantidade de resultados retornados             */
-    int        total;       /* total de matches (pode ser > count se limitado) */
-} ResultadoBusca;
-
-/*
  * buscar - funcao principal de busca combinada.
  *
  * Fluxo:

@@ -10,7 +10,7 @@
 /* Limite de resultados por consulta */
 #define MAX_RESULTADOS 500
 
-f struct {
+typedef struct {
     char regiao[8];
     char estado[4];
     char municipio[MAX_CAMPO];
@@ -28,5 +28,12 @@ f struct {
     char unidade[16];
     char bandeira[64];
 } Registro;
+
+/* Resultado comum às rotinas de busca (liberar campo registros com free) */
+typedef struct {
+    Registro **registros;
+    int        count;
+    int        total;
+} ResultadoBusca;
 
 #endif /* TIPOS_H */

@@ -153,6 +153,9 @@ async function executarBusca() {
   if (dataInicio)  parametros.set("data_inicio", dataInicio);
   if (dataFim)     parametros.set("data_fim",    dataFim);
 
+  const metodo = document.getElementById("sel-metodo").value.trim() || "hash";
+  parametros.set("metodo", metodo);
+
   try {
     const resposta  = await fetchComTimeout(`/api/busca?${parametros.toString()}`, 10000);
     const dados = await resposta.json();
@@ -177,6 +180,7 @@ function renderizarResultados(dados) {
 
   document.getElementById("st-total").textContent    = dados.total;
   document.getElementById("st-exibindo").textContent = dados.retornados;
+  document.getElementById("st-metodo").textContent   = rotuloMetodo(dados.metodo);
   document.getElementById("st-min").textContent =
     dados.preco_min ? `R$ ${dados.preco_min}` : "—";
   document.getElementById("st-med").textContent =
@@ -230,6 +234,7 @@ function esconderResultados() {
   document.getElementById("tabela-wrapper").hidden = true;
   document.getElementById("msg-vazio").hidden      = true;
   document.getElementById("stats").hidden          = true;
+  document.getElementById("st-metodo").textContent = "—";
 }
 
 function mostrarAviso(mensagem) {
@@ -245,8 +250,15 @@ function limparFiltros() {
   document.getElementById("sel-bandeira").value    = "";
   document.getElementById("inp-data-inicio").value = "";
   document.getElementById("inp-data-fim").value    = "";
+  document.getElementById("sel-metodo").value      = "hash";
   fecharSugestoes();
   esconderResultados();
+}
+
+function rotuloMetodo(codigo) {
+  if (codigo === "sequencial") return "Sequencial";
+  if (codigo === "interpolacao") return "Interpolação (data)";
+  return "Hash + binária";
 }
 
 function parseVirgula(texto) {

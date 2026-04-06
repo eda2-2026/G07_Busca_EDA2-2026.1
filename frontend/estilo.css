@@ -133,6 +133,25 @@ main {
   position: relative;
 }
 
+.campo-metodo {
+  grid-column: 1 / -1;
+  max-width: 520px;
+}
+
+.hint-metodo {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  line-height: 1.35;
+  text-transform: none;
+  letter-spacing: 0;
+  font-weight: 400;
+}
+
+.stat-metodo {
+  font-size: 0.88rem;
+  color: var(--accent);
+}
+
 label {
   font-size: 0.82rem;
   font-weight: 600;
